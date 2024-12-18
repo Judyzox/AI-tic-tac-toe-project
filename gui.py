@@ -5,10 +5,12 @@ import csv
 import os
 from minimax import minimax
 from alpha_beta import alpha_beta
-from minimax_sym import minimax as minimax_sym
-from alpha_beta_sym import alpha_beta as alpha_beta_sym
+from minimax_sym import minimax_sym
+from alpha_beta_sym import alpha_beta_sym
 from heuristic import greedy_best_first
 from heuristic2 import hill_climbing
+from heuristic1_sym import greedy_best_first
+from heuristic2_sym import hill_climbing
 from datetime import datetime
 
 # Constants for the game
@@ -94,6 +96,8 @@ class TicTacToe:
             "alpha-beta-symmetry",
             "heuristic",
             "heuristic2",
+            "heuristic1_sym",
+            "heuristic2_sym",
             command=self.set_algorithm
         )
         self.dropdown_menu.config(font=("Helvetica", 14), bg="lightpink")
@@ -155,35 +159,43 @@ class TicTacToe:
             return
 
         start_time = time.time()
+        move = None  # Initialize `move` to avoid UnboundLocalError
 
         if self.algorithm == "minimax":
             _, move = minimax(self.board, 0, True)
         elif self.algorithm == "alpha_beta":
             _, move = alpha_beta(self.board, 0, float("-inf"), float("inf"), True)
-        elif self.algorithm == "minimax-symmetry":
+        elif self.algorithm == "minimax_symmetry":
             _, move = minimax_sym(self.board, 0, True)
-        elif self.algorithm == "alpha-beta-symmetry":
+        elif self.algorithm == "alphabeta_symmetry":
             _, move = alpha_beta_sym(self.board, 0, float("-inf"), float("inf"), True)
         elif self.algorithm == "heuristic":
             _, move = greedy_best_first(self.board, True)
         elif self.algorithm == "heuristic2":
             _, move = hill_climbing(self.board, True)
+        elif self.algorithm == "heuristic1_sym":
+            _, move = greedy_best_first(self.board, True)
+        elif self.algorithm == "heuristic2_sym":
+            _, move = hill_climbing(self.board, True)
+        else:
+            print(f"Error: Unsupported algorithm '{self.algorithm}'")
+            return  # Exit the function early
 
         elapsed_time = round(time.time() - start_time, 4)
-        self.time_label.config(text=f"Algorithm Time: {elapsed_time}s")
+        self.window.after(0, lambda: self.time_label.config(text=f"Algorithm Time: {elapsed_time}s"))
         self.times.append(elapsed_time)
 
         if move:
             row, col = move
             self.board[row][col] = AI
-            self.buttons[row][col].config(text=AI, state=tk.DISABLED, fg="blue")
+            self.window.after(0, lambda: self.buttons[row][col].config(text=AI, state=tk.DISABLED, fg="blue"))
 
             if self.check_winner(AI):
-                self.display_message("AI wins!")
+                self.window.after(0, lambda: self.display_message("AI wins!"))
                 self.game_over = True
                 self.game_state = "Lose"
             elif self.is_draw():
-                self.display_message("It's a draw!")
+                self.window.after(0, lambda: self.display_message("It's a draw!"))
                 self.game_over = True
                 self.game_state = "Draw"
 
@@ -232,3 +244,4 @@ class TicTacToe:
 if __name__ == "__main__":
     game = TicTacToe()
     game.run()
+
