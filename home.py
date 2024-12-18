@@ -11,7 +11,7 @@ def on_alg_button_click(algorithm):
     """
     global selected_algorithm
     selected_algorithm = algorithm
-    root.destroy()  # Close the selection window
+    root.destroy()  
     game = TicTacToe(algorithm=selected_algorithm)
     game.run()
 
@@ -22,11 +22,10 @@ def create_algorithm_selection_window():
     global root
     root = tk.Tk()
     root.title("Tic-Tac-Toe AI Selector")
-    root.geometry("300x350")  # Adjust window size to accommodate new buttons
-    root.configure(bg="#ffe6f2")  # Set background color to light pink
+    root.geometry("300x500")
+    root.configure(bg="#ffe6f2")
 
-    # Create a frame for the algorithm selection
-    frame = tk.Frame(root, bg="#ffe6f2")  # Frame background is also pink
+    frame = tk.Frame(root, bg="#ffe6f2")
     frame.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
 
     # Create a label for instructions
@@ -34,35 +33,35 @@ def create_algorithm_selection_window():
         frame,
         text="Choose an algorithm to solve \nthe Tic-Tac-Toe problem",
         font=("Helvetica", 14, "bold"),
-        bg="#ffe6f2",  # Light pink background
-        fg="#cc0052"  # Dark pink text
+        bg="#ffe6f2",
+        fg="#cc0052"
     )
     label.pack(pady=20)
 
-    # Create a style for buttons
     style = ttk.Style()
     style.configure(
         "TButton",
         font=("Helvetica", 12),
         padding=5,
         relief="flat",
-        background="#ff80bf",  # Button background pink
-        foreground="pink"  # Button text white
+        background="#ff80bf",
+        foreground="pink"
     )
     style.map(
         "TButton",
-        background=[('pressed', '#cc0052'), ('active', '#ff4d94')],  # Pressed and active states darker pink
-        foreground=[('pressed', 'white'), ('active', 'white')]  # Text stays white
+        background=[('pressed', '#cc0052'), ('active', '#ff4d94')],
+        foreground=[('pressed', 'white'), ('active', 'white')]
     )
 
-    # Create algorithm buttons including new symmetry buttons
     alg_buttons = [
         ("MiniMax", "minimax"),
         ("MiniMax Alpha Beta", "alpha_beta"),
         ("MiniMax First Heuristic", "heuristic"),
         ("MiniMax Second Heuristic", "heuristic2"),
-        ("MiniMax Symmetry", "minimax_symmetry"),  # New button
-        ("AlphaBeta Symmetry", "alphabeta_symmetry")  # New button
+        ("MiniMax Symmetry", "minimax_symmetry"),
+        ("AlphaBeta Symmetry", "alphabeta_symmetry"),
+        ("first heuristic Symmetry", "heuristic1_sym"),
+        ("Second heuristic Symmetry", "heuristic2_sym")
     ]
 
     for alg_name, alg_value in alg_buttons:
@@ -73,3 +72,4 @@ def create_algorithm_selection_window():
 
 if __name__ == "__main__":
     create_algorithm_selection_window()
+
